@@ -1,0 +1,68 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Force these files to be crlf (windows style) on checkout
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.sh text eol=lf
+
+# Force these files to be lf (unix style) on checkout
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Binary files should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.exe binary
+*.dll binary
+*.pyd binary
+*.so binary
+*.dylib binary
+*.h5 binary
+*.pkl binary
+*.pth binary
+*.pt binary
+*.bin binary
+*.pt binary
+*.pth binary
+*.pkl binary
+*.hdf5 binary
+*.npy binary
+*.npz binary
+*.tflite binary
+*.pb binary
+*.pbtxt binary
+*.prototxt binary
+*.caffemodel binary
+*.caffemodel.h5 binary
+*.caffemodel.meta binary
+*.caffemodel.data-00000-of-00001 binary
+*.caffemodel.index binary
+*.caffemodel.meta binary
+*.caffemodel.data-00000-of-00002 binary
+*.caffemodel.data-00001-of-00002 binary
+*.caffemodel.data-00000-of-00003 binary
+*.caffemodel.data-00001-of-00003 binary
+*.caffemodel.data-00002-of-00003 binary
+*.caffemodel.data-00000-of-00004 binary
+*.caffemodel.data-00001-of-00004 binary
+*.caffemodel.data-00002-of-00004 binary
+*.caffemodel.data-00003-of-00004 binary
+*.caffemodel.data-00000-of-00005 binary
+*.caffemodel.data-00001-of-00005 binary
+*.caffemodel.data-00002-of-00005 binary
+*.caffemodel.data-00003-of-00005 binary
+*.caffemodel.data-00004-of-00005 binary
