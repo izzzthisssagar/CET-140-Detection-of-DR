@@ -11,6 +11,7 @@ This project implements a deep learning-based system for detecting Diabetic Reti
 ## 🎯 Key Features
 - **Multi-model Support**: Implements and compares multiple CNN architectures
 - **High Accuracy**: Achieves up to 93.05% AUC score
+- **Model Interpretability**: Includes Grad-CAM visualization to understand model decisions
 - **Comprehensive Evaluation**: Includes detailed metrics and visualizations
 - **Data Analysis**: RGB channel statistics and distribution analysis
 - **Easy Deployment**: Models saved in standard formats for easy integration
@@ -26,9 +27,12 @@ DR_Project/
 │   ├── logs/                # Training logs and metrics
 │   ├── plots/               # Visualizations and graphs
 │   └── reports/             # Generated reports and predictions
+├── eye_gradcam_results/     # Grad-CAM visualizations
 ├── utils/                   # Utility scripts
 │   └── image_stats.py      # RGB channel analysis and visualization
 ├── main.py                 # Main training and evaluation script
+├── simple_eye_gradcam.py   # Script for generating Grad-CAM visualizations
+├── cleanup.py              # Project cleanup utility
 ├── requirements.txt        # Python dependencies
 └── README.md              # This file
 ```
@@ -87,6 +91,18 @@ To make predictions on new images, place them in the `data/test_images` director
 python main.py --predict
 ```
 
+### Generating Grad-CAM Visualizations
+To generate Grad-CAM visualizations for your test images:
+1. Place your test images in the `C:\Users\LOQ\Desktop\test_images` directory
+2. Run the Grad-CAM script:
+```bash
+python simple_eye_gradcam.py
+```
+3. The visualizations will be saved in the `eye_gradcam_results` directory, including:
+   - Original images
+   - Heatmaps showing model focus areas
+   - Combined visualizations with heatmaps overlaid on original images
+
 ## 📊 Results
 Our best performing model achieved the following metrics:
 
@@ -97,6 +113,14 @@ Our best performing model achieved the following metrics:
 | Recall    | 0.89  |
 | F1-Score  | 0.89  |
 | AUC-ROC   | 0.9305|
+
+### Model Interpretability with Grad-CAM
+Grad-CAM (Gradient-weighted Class Activation Mapping) visualizations help understand which regions of the input image the model focuses on when making predictions. This is particularly useful for medical imaging to ensure the model is making decisions based on clinically relevant features.
+
+Example Grad-CAM output:
+![Grad-CAM Example](eye_gradcam_results/example_gradcam.jpg)
+
+*The heatmap shows the model's focus areas, with warmer colors indicating higher importance in the model's decision-making process.*
 
 ## 📂 Project Structure
 ```

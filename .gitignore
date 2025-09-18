@@ -19,6 +19,78 @@ wheels/
 .installed.cfg
 *.egg
 *.pkl
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Local development
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dataset files - these are typically large and should not be versioned
+data/raw_images/
+data/processed/
+data/processed_images/
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.npy
+*.npz
+
+# Model files - these can be large
+*.h5
+*.hdf5
+*.tflite
+*.pb
+*.tfl
+
+# Output directories
+results/
+eye_gradcam_results/
+test_output/
+
+# Local configuration
+config.json
+*.yaml
+*.yml
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# System files
+.DS_Store
+Thumbs.db
 
 # Virtual Environment
 venv/
