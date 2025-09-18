@@ -18,7 +18,7 @@
 # 11. Comprehensive report generation
 # 12. Final deployment model
 # 
-# Author: SAGAR THAPA (bb955)
+# Author: SAGAR THAPA (bi95ss)
 # Module: CET140 Specialist Project
 # Date: 2025
 
@@ -1307,53 +1307,102 @@ def predict_on_external_images(model, external_images_dir, output_csv_path):
     df.to_csv(output_csv_path, index=False)
     print(f"External predictions saved to: {output_csv_path}")
 
-if __name__ == "__main__":
-    # Run the main training pipeline
-    trained_models, histories, results, best_model_name = main()
-
-    # After training, generate a comprehensive report and visualizations
-    if results and trained_models and best_model_name:
-        print("\n" + "="*60)
-        print("POST-TRAINING ANALYSIS")
-        print("="*60)
-        
-        # Get the best performing model
-        best_model = trained_models[best_model_name]
-        
-        # Visualize model interpretability for the best model
-        print("\nVisualizing model interpretability...")
-        # Generate Grad-CAM for all test images
-        visualize_model_interpretability(best_model, test_ds, best_model_name, num_images=None)
-        
-        # Create a comprehensive report
-        print("\nCreating comprehensive report...")
-        create_comprehensive_report(results, best_model_name)
-        
-        # Create and save the final deployment model
-        print("\nCreating deployment model...")
-        deployment_model = create_deployment_model(best_model_name, trained_models)
-
-        # Run predictions on external test images
-        external_images_dir = r"c:\Users\LOQ\Desktop\test_images"
-        external_predictions_csv = os.path.join(REPORTS_DIR, "external_test_images_predictions.csv")
-        predict_on_external_images(deployment_model, external_images_dir, external_predictions_csv)
-
-        # Final message
-        print("\n" + "="*60)
-        print("PROJECT EXECUTION COMPLETE")
-        print("="*60)
-        print(f"All results have been saved to: {RESULTS_DIR}")
-        print("Check the subdirectories for:")
-        print("- models: Trained models")
-        print("- plots: All generated graphs and charts")
-        print("- reports: PDF summary and prediction CSVs")
-        print("- logs: Training history and other logs")
-        print("\nNext steps:")
-        print("1. Review the project_report.pdf in the 'reports' folder.")
-        print("2. Use the best model for future predictions.")
-        print("3. Prepare your presentation using the generated plots and results.")
+def demo_gradcam():
+    """Quick demo function to show Grad-CAM with minimal setup"""
+    print("\n" + "="*60)
+    print("GRAD-CAM DEMO")
+    print("="*60)
+    
+    # Check if we have a trained model available
+    model_path = os.path.join(MODELS_DIR, "deployment_model")
+    if os.path.exists(model_path):
+        print("Loading existing trained model...")
+        model = tf.keras.models.load_model(model_path)
     else:
-        print("Training failed or was skipped. Post-processing steps will not be executed.")
+        print("No trained model found. Training a quick model first...")
+        # Create a quick model
+        model, _ = create_advanced_model('ResNet50', input_shape=(*IMG_SIZE, 3))
+        model = compile_model(model)
+        
+        # Create a small dataset for quick training
+        train_ds, _, test_ds, _ = create_datasets()
+        
+        # Train for just a few epochs
+        print("Training a quick model (this may take a few minutes)...")
+        model.fit(
+            train_ds.take(10),  # Use just a small subset
+            epochs=2,
+            verbose=1
+        )
+    
+    # Create test dataset if not already available
+    if 'test_ds' not in locals():
+        test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            TEST_DIR,
+            labels='inferred',
+            label_mode='binary',
+            image_size=IMG_SIZE,
+            batch_size=BATCH_SIZE,
+            shuffle=False
+        )
+
+    # Generate Grad-CAM visualizations
+    print("\nGenerating Grad-CAM visualizations...")
+    os.makedirs(PLOTS_DIR, exist_ok=True)
+    visualize_model_interpretability(model, test_ds, "DemoModel", num_images=5)
+    print("\nGrad-CAM images have been saved to:", os.path.join(PLOTS_DIR, "gradcam"))
+
+if __name__ == "__main__":
+    # Check if we should run the demo
+    if '--demo' in sys.argv:
+        demo_gradcam()
+    else:
+        # Run the main training pipeline
+        trained_models, histories, results, best_model_name = main()
+
+        # After training, generate a comprehensive report and visualizations
+        if results and trained_models and best_model_name:
+            print("\n" + "="*60)
+            print("POST-TRAINING ANALYSIS")
+            print("="*60)
+            
+            # Get the best performing model
+            best_model = trained_models[best_model_name]
+            
+            # Visualize model interpretability for the best model
+            print("\nVisualizing model interpretability...")
+            # Generate Grad-CAM for all test images
+            visualize_model_interpretability(best_model, test_ds, best_model_name, num_images=None)
+            
+            # Create a comprehensive report
+            print("\nCreating comprehensive report...")
+            create_comprehensive_report(results, best_model_name)
+            
+            # Create and save the final deployment model
+            print("\nCreating deployment model...")
+            deployment_model = create_deployment_model(best_model_name, trained_models)
+
+            # Run predictions on external test images
+            external_images_dir = r"c:\Users\LOQ\Desktop\test_images"
+            external_predictions_csv = os.path.join(REPORTS_DIR, "external_test_images_predictions.csv")
+            predict_on_external_images(deployment_model, external_images_dir, external_predictions_csv)
+
+            # Final message
+            print("\n" + "="*60)
+            print("PROJECT EXECUTION COMPLETE")
+            print("="*60)
+            print(f"All results have been saved to: {RESULTS_DIR}")
+            print("Check the subdirectories for:")
+            print("- models: Trained models")
+            print("- plots: All generated graphs and charts")
+            print("- reports: PDF summary and prediction CSVs")
+            print("- logs: Training history and other logs")
+            print("\nNext steps:")
+            print("1. Review the project_report.pdf in the 'reports' folder.")
+            print("2. Use the best model for future predictions.")
+            print("3. Prepare your presentation using the generated plots and results.")
+        else:
+            print("Training failed or was skipped. Post-processing steps will not be executed.")
 
 # Utility: finalize post-processing using existing artifacts (no re-training)
 def run_post_training_from_artifacts(external_images_dir=r"c:\\Users\\LOQ\\Desktop\\test_images"):
